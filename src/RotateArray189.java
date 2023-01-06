@@ -1,43 +1,40 @@
 public class RotateArray189 {
     public void rotate(int[] nums, int k) {
-
         //first calculate the actual displacement
         int arrLength = nums.length;
         int actualK = k % arrLength;
 
-        //this variable will hold the variable getting replaced
-        int tempVal;
+        if (arrLength == 0 || actualK == 0) return;
 
-//        this variable will keep track of
-        int startIndex = 0;
-        int oldIndex = 0;
-        int currentVal = nums[oldIndex];
-        for (int counter = 0; counter < nums.length; counter++) {
-            if(oldIndex == startIndex){
-                oldIndex = (oldIndex+1)% arrLength;
-                startIndex = oldIndex;
-                currentVal = nums[oldIndex];
+        //variable to track number of replacements
+        int counter = 0;
+
+        //variable to temporary hold value that is getting replaced
+
+        for (int start = 0; counter < arrLength; start++) {
+            int current = start;
+            int tempVal = nums[current];
+
+            //initializing next to -9 to satisfy initial while condition
+            int next = -9;
+            while (next != start) {
+                int currentVal;
+                next = (current + actualK) % arrLength;
+                currentVal = nums[next];
+                nums[next] = tempVal;
+                tempVal = currentVal;
+                current = next;
+                counter++;
             }
-            int newIndex = (oldIndex + actualK) % arrLength;
-            if(oldIndex == startIndex){
-                oldIndex = (oldIndex+1)% arrLength;
-                startIndex = oldIndex;
-                newIndex = (oldIndex + actualK) % arrLength;
-                currentVal = nums[oldIndex];
-            }
-            tempVal = nums[newIndex];
-            nums[newIndex] = currentVal;
-            oldIndex = newIndex;
-            currentVal = tempVal;
         }
+
     }
+
 
     public static void main(String[] args) {
         RotateArray189 rotater = new RotateArray189();
-        int[] arrInput = {-1,-100,3,99};
-        rotater.rotate(arrInput, 2);
+        int[] arrInput = {1, 2, 3, 4, 5, 6};
+        rotater.rotate(arrInput, 4);
         System.out.println(arrInput);
-
-
     }
 }
